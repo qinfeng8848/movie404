@@ -1,5 +1,7 @@
 class MoviesController < ApplicationController
   before_action :authenticate_user!, only: [:new,:edit,:update,:create,:destroy]
+  before_action :find_movie_and_check_permission, only: [:edit, :update, :destroy]
+
 
   def index
     @movies = Movie.all
@@ -14,11 +16,11 @@ class MoviesController < ApplicationController
   end
 
   def edit
-    @movie = Movie.find(params[:id])
+     # @movie = Movie.find(params[:id])
   end
 
   def update
-    @movie = Movie.find(params[:id])
+    # @movie = Movie.find(params[:id])
     if @movie.update(movie_params)
       redirect_to movies_path, notice: "更新成功"
     else
@@ -37,7 +39,7 @@ class MoviesController < ApplicationController
   end
 
   def destroy
-    @movie = Movie.find(params[:id])
+    # @movie = Movie.find(params[:id])
     @movie.destroy
 
     flash[:alert] = "电影已经删除"
@@ -53,6 +55,14 @@ class MoviesController < ApplicationController
 
   def movie_params
     params.require(:movie).permit(:title,:description)
+  end
+
+  def find_movie_and_check_permission
+     @movie = Movie.find(params[:id])
+
+     if current_user != @movie.user
+       redirect_to root_path, alert: "你没有权限"
+     end
   end
 
 end
