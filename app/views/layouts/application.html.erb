@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Movie404</title>
+    <title>Movie 404</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,6 +10,12 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="container-fluid">
+          <%= render "common/navbar" %>
+        
+          <%= yield %>
+    </div>
+
+    <%= render "common/footer" %>
   </body>
 </html>
